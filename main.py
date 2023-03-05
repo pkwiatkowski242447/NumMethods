@@ -34,19 +34,33 @@ def chose_functions():
 
 def show_graph(function_num):   # function_num oznacza numer wybranej przez użytkownika funkcji
     print("Funkcja do wyświetlania wykresu zadanej funkcji.")
+    input("Naciśnij klawisz, aby kontynuować...")
+    clear()
 
 
-def calculate(function_number, start, end):                                         # function_num oznacza numer wybranej przez użytkownika funkcji
+def calculate(function_number, start, end, cond, value):                            # function_num oznacza numer wybranej przez użytkownika funkcji
     print("Funkcja przeznaczona do obliczania miejsc zerowych zadanej funkcji.")    # start to początek przedziału, na którym szukane będzie miejsce zerowe
-                                                                                    # end oznacza koniec tego przedziału
+    input("Naciśnij klawisz, aby kontynuować...")                                   # end oznacza koniec tego przedziału
+    clear()                                                                         # cond oznacza wybrany przez użytkownika warunek stopu
+                                                                                    # value to wartość dotycząca warunku stopu, a więc liczba iteracji lub też zadana dokładność
+
+
+def chose_condition():
+    print("\n===== Wybór warunku stopu algorytmu =====")
+    print("1. Osiągnięcie zadanej dokładności")
+    print("2. Osiągnięcie zadanej liczby iteracji")
+    print("=========================================")
+    cond = int(input("Twój wybór: "))
+    return cond
 
 
 def main():
     user_choice = 0
     while user_choice != 2:
+        clear()
         print_menu()
         user_choice = int(input("Twój wybór: "))
-        if user_choice != 2:
+        if user_choice == 1:
             clear()
             chose_functions()
             function_choice = int(input("Twój wybór: "))
@@ -55,13 +69,28 @@ def main():
                 input("Wciśnij klawisz aby kontynuować...")
                 clear()
             elif function_choice != 10:
-                start = input("Podaj początek przedziału, na którym szukane będzie miejsce zerowe: ")
+                start = input("\nPodaj początek przedziału, na którym szukane będzie miejsce zerowe: ")
                 end = input("Podaj koniec przedziału, na którym szukane będzie miejsce zerowe: ")
+                stop_cond = 0
+                val = 0
+                while stop_cond != 1 and stop_cond != 2:
+                    stop_cond = chose_condition()
+                    if stop_cond == 1:
+                        val = float(input("Podaj oczekiwaną dokładność: "))
+                    elif stop_cond == 2:
+                        val = int(input("Podaj oczekiwaną liczbę interacji: "))
+                    else:
+                        print("Podano nieprawidłową opcję z menu")
+                        clear()
                 clear()
                 show_graph(function_choice)
-                calculate(function_choice, start, end)
+                calculate(function_choice, start, end, stop_cond, val)
             else:
                 clear()
+        elif user_choice != 1 and user_choice != 2:
+            print("Podano nieprawidłową opcję.")
+            input("Naciśnij dowolny klawisz aby kontynuować...")
+            clear()
 
 
 if __name__ == '__main__':
