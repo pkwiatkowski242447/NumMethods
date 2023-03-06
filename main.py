@@ -1,96 +1,113 @@
-import os
+import math
 import matplotlib.pyplot as plt
 import numpy as np
+import menu as mn
+import calc as cl
+import addon as ad
 
 
-def print_menu():
-    print("===== Menu =====")
-    print("1. Wybór funkcji do wyznaczenia miejsc zerowych i wyświetlenia.")
-    print("2. Zakończenie działania programu")
-    print("================")
-
-
-def clear():
-    if os.name == 'posix':
-        os.system('clear')      # Czyszczenie konsoli dla systemów Linux / Mac
+def show_graph(function_num, start, end):   # function_num oznacza numer wybranej przez użytkownika funkcji
+    if start > end:
+        print("Nieprawidłowa kolejność krańcy przedziału.")
     else:
-        os.system('cls')        # Czyszczenie konsoli dla systemu Windows
-
-
-def chose_functions():
-    print("===== Wybór funkcji od wyświetlenia i wyznaczenia miejsc zerowych =====")
-    print("1. x^3 + 2x^2 + 7")
-    print("2. ctg(x)")
-    print("3. e^x")
-    print("4. (ctg(x))^3 + 2(ctg(x))^2 + 7")
-    print("5. ctg(x^3 + 2x^2 + 7)")
-    print("6. e ^ ctg(x)")
-    print("7. ctg(e ^ x)")
-    print("8. (e ^ x) ^ 3 + 2(e ^ x) ^ 2 + 7")
-    print("9. e ^ (x^3 + 2x^2 + 7)")
-    print("10. Powrót to menu głównego")
-    print("=======================================================================")
-
-
-def show_graph(function_num):   # function_num oznacza numer wybranej przez użytkownika funkcji
-    print("Funkcja do wyświetlania wykresu zadanej funkcji.")
-    input("Naciśnij klawisz, aby kontynuować...")
-    clear()
-
-
-def calculate(function_number, start, end, cond, value):                            # function_num oznacza numer wybranej przez użytkownika funkcji
-    print("Funkcja przeznaczona do obliczania miejsc zerowych zadanej funkcji.")    # start to początek przedziału, na którym szukane będzie miejsce zerowe
-    input("Naciśnij klawisz, aby kontynuować...")                                   # end oznacza koniec tego przedziału
-    clear()                                                                         # cond oznacza wybrany przez użytkownika warunek stopu
-                                                                                    # value to wartość dotycząca warunku stopu, a więc liczba iteracji lub też zadana dokładność
-
-
-def chose_condition():
-    print("\n===== Wybór warunku stopu algorytmu =====")
-    print("1. Osiągnięcie zadanej dokładności")
-    print("2. Osiągnięcie zadanej liczby iteracji")
-    print("=========================================")
-    cond = int(input("Twój wybór: "))
-    return cond
+        x = np.linspace(start, end, (ad.round_value(end) - ad.round_value(start)) * 20)
+        match function_num:
+            case 1:
+                y = cl.horner_scheme(x, [1, 2, 0, 7], 4)
+                func = "x ^ 3 + 2 * x ^ 2 + 7"
+            case 2:
+                func = "tg(x)"
+                y = []
+                for i in range(x.size):
+                    y.append(math.tan(x[i]))
+            case 3:
+                func = "e ^ x"
+                y = math.e ** x
+            case 4:
+                func = "(tg(x)) ^ 3 + 2 * (tg(x)) ^ 2 + 7"
+                y = []
+                for i in range(x.size):
+                    y.append(cl.horner_scheme(math.tan(x[i]), [1, 2, 0, 7], 4))
+            case 5:
+                func = "tg(x ^ 3 + 2 * x ^ 2 + 7)"
+                y = []
+                for i in range(x.size):
+                    y.append(math.tan(cl.horner_scheme(x[i], [1, 2, 0, 7], 4)))
+            case 6:
+                func = "e ^ tg(x)"
+                y = []
+                for i in range(x.size):
+                    y.append(math.e ** math.tan(x[i]))
+            case 7:
+                func = "tg(e ^ x)"
+                y = []
+                for i in range(x.size):
+                    y.append(math.tan(math.e ** x[i]))
+            case 8:
+                func = "(e ^ x) ^ 3 + 2 * (e ^ x) ^ 2 + 7"
+                y = []
+                for i in range(x.size):
+                    y.append(cl.horner_scheme(math.e ** x[i], [1, 2, 0, 7], 4))
+            case 9:
+                func = "e ^ (x ^ 3 + 2 * x ^ 2 + 7)"
+                y = []
+                for i in range(x.size):
+                    y.append(math.e ** (cl.horner_scheme(x[i], [1, 2, 0, 7], 4)))
+            case _:
+                print("Wybrano opcję spoza menu")
+        plt.subplots(1, 1, figsize=(10, 14))
+        plt.plot(x, y)
+        plt.xlim((start - 0.25, end + 0.25))
+        plt.ylim((-10.0, 20.0))
+        plt.xticks(np.arange(start, end + 0.1, step=1))
+        plt.yticks(np.arange(-10.0, 20.1, step=2.5))
+        plt.xlabel("Oś OX")
+        plt.ylabel("Oś OY")
+        plt.title("Wykres funkcji o wzorze y = " + func)
+        plt.grid()
+        plt.show()
+        input("Naciśnij klawisz, aby kontynuować...")
+        ad.clear()
 
 
 def main():
     user_choice = 0
     while user_choice != 2:
-        clear()
-        print_menu()
+        ad.clear()
+        mn.print_menu()
         user_choice = int(input("Twój wybór: "))
         if user_choice == 1:
-            clear()
-            chose_functions()
+            ad.clear()
+            mn.chose_functions()
             function_choice = int(input("Twój wybór: "))
             if function_choice > 10 or function_choice < 1:
                 print("Wybrano nieprawidłową opcję z menu.")
                 input("Wciśnij klawisz aby kontynuować...")
-                clear()
+                ad.clear()
             elif function_choice != 10:
-                start = input("\nPodaj początek przedziału, na którym szukane będzie miejsce zerowe: ")
-                end = input("Podaj koniec przedziału, na którym szukane będzie miejsce zerowe: ")
+                show_graph(function_choice, -5, 5)
+                start = float(input("\nPodaj początek przedziału, na którym szukane będzie miejsce zerowe: "))
+                end = float(input("Podaj koniec przedziału, na którym szukane będzie miejsce zerowe: "))
                 stop_cond = 0
                 val = 0
                 while stop_cond != 1 and stop_cond != 2:
-                    stop_cond = chose_condition()
+                    stop_cond = mn.chose_condition()
                     if stop_cond == 1:
                         val = float(input("Podaj oczekiwaną dokładność: "))
                     elif stop_cond == 2:
                         val = int(input("Podaj oczekiwaną liczbę interacji: "))
                     else:
                         print("Podano nieprawidłową opcję z menu")
-                        clear()
-                clear()
-                show_graph(function_choice)
-                calculate(function_choice, start, end, stop_cond, val)
+                        ad.clear()
+                ad.clear()
+                cl.calculate(function_choice, start, end, stop_cond, val)
+                show_graph(function_choice, start, end)
             else:
-                clear()
+                ad.clear()
         elif user_choice != 1 and user_choice != 2:
             print("Podano nieprawidłową opcję.")
             input("Naciśnij dowolny klawisz aby kontynuować...")
-            clear()
+            ad.clear()
 
 
 if __name__ == '__main__':
