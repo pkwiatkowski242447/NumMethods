@@ -3,7 +3,6 @@ import math
 
 
 def function_value(arg, function_choice):
-    val = 0
     coefficients = [1, 2, 0, 7]
     match function_choice:
         case 1:
@@ -77,6 +76,7 @@ def bisection(function_number, start, end, cond, value):
                 mid = (start + end) / 2
             print("\nMiejscem zerowym wybranej funkcji jest x = " + str(mid) + ", wyznaczony bisekcją.")
             print("Uzykana liczba iteracji: " + str(itr))
+            return mid
         else:
             for i in range(value + 1):
                 temp = mid
@@ -92,6 +92,7 @@ def bisection(function_number, start, end, cond, value):
                     value_a = value_mid
             print("\nMiejscem zerowym wybranej funkcji jest x = " + str(mid) + ", wyznaczony bisekcją.")
             print("Uzykana dokładność wyznaczenia miejsca zerowego: " + str(mid - temp))
+            return mid
 
 
 def secant_method(function_number, x1, x2, cond, value):
@@ -100,13 +101,11 @@ def secant_method(function_number, x1, x2, cond, value):
     value_x1 = function_value(x1, function_number)
     value_x2 = function_value(x2, function_number)
     itr = 0
-    flag1 = False   # Wykorzystywana do zakończenia pętli dla warunku gdy x1 = x2
-    flag2 = False   # Wykorzystywana w celu weryfikacji prawidłowości wyniku
     if value_x1 * value_x2 > 0:
         print("\nWartości funcji na końcach przedziałów są tego samego znaku, przez co wymagania metody siecznych nie są spełnione.")
     else:
         if cond == 1:
-            while abs(x2 - x1) > value and flag1 is False:
+            while abs(x2 - x1) > value:
                 itr += 1
                 if value_x2 - value_x1 != 0:
                     next_one = x2 - ((value_x2 * (x2 - x1)) / (value_x2 - value_x1))
@@ -115,15 +114,12 @@ def secant_method(function_number, x1, x2, cond, value):
                     value_x1 = value_x2
                     x2 = next_one
                     value_x2 = next_val
-                else:
-                    flag1 = True
-                    if function_value(x2, function_number) < value:
-                        flag2 = True
-            if x2 < start_x1 or x2 > start_x2 or flag2 is False:
+            if x2 < start_x1 or x2 > start_x2:
                 print("\nNie udało się wyznaczyć miejsca zerowego wybranej funkcji.")
             else:
                 print("\nPierwiastkiem wybranej funkcji jest x = " + str(x2) + ", wyznaczony metodą siecznych.")
                 print("Uzyskana liczba iteracji: " + str(itr))
+                return x2
         else:
             while itr <= value:
                 itr += 1
@@ -139,3 +135,4 @@ def secant_method(function_number, x1, x2, cond, value):
             else:
                 print("\nPierwiastkiem wybranej funkcji jest x = " + str(x2) + ", wyznaczony metodą siecznych.")
                 print("Uzyskana dokładność wyznaczenia miejsca zerowego: " + str(x2 - x1))
+                return x2

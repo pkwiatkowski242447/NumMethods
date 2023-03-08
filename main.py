@@ -31,12 +31,11 @@ def show_graph(function_num, start, end):   # function_num oznacza numer wybrane
         ad.clear()
 
 
-'''
 def show_graph_with_points(function_num, start, end, zero_b, zero_s):
     if start > end:
         print("Nieprawidłowa kolejność krańcy przedziału.")
     else:
-        x = np.linspace(start, end, (ad.round_value(end) - ad.round_value(start)) * 20)
+        x = np.linspace(start, end, (ad.round_value(end) - ad.round_value(start)) * 200)
         y = []
         if 0 < function_num <= 9:
             for i in range(x.size):
@@ -53,10 +52,13 @@ def show_graph_with_points(function_num, start, end, zero_b, zero_s):
         plt.ylabel("Oś OY")
         plt.title("Wykres wybranej funkcji")
         plt.grid()
+        if zero_b is not None:
+            plt.plot(zero_b, cl.function_value(zero_b, function_num), marker="o", markerfacecolor="orange")
+        if zero_s is not None:
+            plt.plot(zero_s, cl.function_value(zero_s, function_num), marker="o", markerfacecolor="purple")
         plt.show()
-        input("Naciśnij klawisz, aby kontynuować...")
+        input("\nNaciśnij klawisz, aby kontynuować...")
         ad.clear()
-'''
 
 
 def main():
@@ -88,9 +90,10 @@ def main():
                     else:
                         print("Podano nieprawidłową opcję z menu")
                         ad.clear()
-                cl.bisection(function_choice, start, end, stop_cond, val)
-                cl.secant_method(function_choice, start, end, stop_cond, val)
-                show_graph(function_choice, start, end)
+                zero_b = cl.bisection(function_choice, start, end, stop_cond, val)
+                zero_s = cl.secant_method(function_choice, start, end, stop_cond, val)
+                if zero_b is not None or zero_s is not None:
+                    show_graph_with_points(function_choice, start, end, zero_b, zero_s)
             else:
                 ad.clear()
         elif user_choice != 1 and user_choice != 2:
