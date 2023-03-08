@@ -8,12 +8,12 @@ def print_menu():
 def chose_functions():
     print("===== Wybór funkcji od wyświetlenia i wyznaczenia miejsc zerowych =====")
     print("1. x ^ 3 + 2 * x ^ 2 + 7")
-    print("2. tg(x)")
+    print("2. cos(x)")
     print("3. e ^ x")
-    print("4. (tg(x)) ^ 3 + 2 * (tg(x)) ^ 2 + 7")
-    print("5. ctg(x ^ 3 + 2 * x ^ 2 + 7)")
-    print("6. e ^ tg(x)")
-    print("7. tg(e ^ x)")
+    print("4. (cos(x)) ^ 3 + 2 * (cos(x)) ^ 2 + 7")
+    print("5. cos(x ^ 3 + 2 * x ^ 2 + 7)")
+    print("6. e ^ cos(x)")
+    print("7. cos(e ^ x)")
     print("8. (e ^ x) ^ 3 + 2 * (e ^ x) ^ 2 + 7")
     print("9. e ^ (x ^ 3 + 2 * x ^ 2 + 7)") # W tym przpadku możliwe jest podanie -3 i -2.9 co spowoduje brak wykresu
     print("10. Powrót to menu głównego")
