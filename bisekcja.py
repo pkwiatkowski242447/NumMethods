@@ -8,7 +8,7 @@ def horner(x, tablica):
     return wynik_h
 
 
-def obliczanie_wartosci_funkcji(x, funkcja):
+def y(x, funkcja):
     wynik = 0.0
     if funkcja == 1:
         wspolczynniki = [2, 3, 4, -1]
@@ -20,20 +20,40 @@ def obliczanie_wartosci_funkcji(x, funkcja):
     return wynik
 
 
-def bisekcja(poczatek, koniec, epsilon, funkcja):
+def bisekcja_epsilon(x1, x2, eps, f):
+    x = 0
     liczba_iteracji = 0
-    f_a = obliczanie_wartosci_funkcji(poczatek, funkcja)
-    f_b = obliczanie_wartosci_funkcji(koniec, funkcja)
+    f_a = y(x1, f)
+    f_b = y(x2, f)
     if f_a * f_b > 0:
         print("Funkcja nie ma różnych znaków na krańcach przedziału")
     else:
-        while abs(koniec - poczatek) > epsilon:
+        while abs(x2 - x1) > eps:
             liczba_iteracji += 1
-            srodek = (poczatek + koniec) / 2
-            f_srodek = obliczanie_wartosci_funkcji(srodek, funkcja)
+            x = (x1 + x2) / 2
+            f_srodek = y(x, f)
             if f_b * f_srodek < 0:
-                poczatek = srodek
+                x1 = x
             else:
-                koniec = srodek
+                x2 = x
                 f_b = f_srodek
-        return srodek, liczba_iteracji
+        return [x, liczba_iteracji]
+
+
+def bisekcja_iteracyjna(x1, x2, i, f):
+    x = 0
+    f_a = y(x1, f)
+    f_b = y(x2, f)
+    if f_a * f_b > 0:
+        print("Funkcja nie ma różnych znaków na krańcach przedziału")
+    else:
+        while i > 0:
+            i -= 1
+            x = (x1 + x2) / 2
+            f_srodek = y(x, f)
+            if f_b * f_srodek < 0:
+                x1 = x
+            else:
+                x2 = x
+                f_b = f_srodek
+        return x
