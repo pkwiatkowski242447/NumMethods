@@ -1,5 +1,6 @@
 from numpy import double
 import bisekcja as b
+import sieczne as s
 
 
 def menu_start():
@@ -10,14 +11,14 @@ def menu_start():
         print("4.Koniec działania programu")
         wybor_funkcji = int(input("Wybierz: "))
         if wybor_funkcji == 1 or wybor_funkcji == 2 or wybor_funkcji == 3:
-            podstawowy_wybor()
+            podstawowy_wybor(wybor_funkcji)
         elif wybor_funkcji == 4:
             break
         else:
             print("Mierny wybór")
 
 
-def podstawowy_wybor():
+def podstawowy_wybor(wybor_f):
     x1 = double(
         input("Podaj lewy kraniec przedziału na którym poszukiwane będzie miejsce zerowe: "))
     x2 = double(
@@ -30,10 +31,11 @@ def podstawowy_wybor():
         wybor_zatrzymania = input("Podaj kryterium zatrzymania algorytmu: ")
         if wybor_zatrzymania == "a":
             wybor_epsilon = double(input("Wprowadź ε: "))
-            print("Wynik: " + str(b.bisekcja_epsilon(x1, x2, wybor_epsilon, 1)[0]))
-            print("Liczba iteracji: " + str(b.bisekcja_epsilon(x1,x2,wybor_epsilon,1)[1]))
+            b.bisekcja(x1, x2, wybor_f, "a", wybor_epsilon)
+            s.sieczne(x1, x2, wybor_f, "a", wybor_epsilon)
         elif wybor_zatrzymania == "b":
             wybor_iteracji = int(input("Podaj liczbe iteracji: "))
-            print("Wynik: " + str(b.bisekcja_iteracyjna(x1, x2, wybor_iteracji, 1)))
+            b.bisekcja(x1, x2, wybor_f, "b", wybor_iteracji)
+            s.sieczne(x1, x2, wybor_f, "b", wybor_iteracji)
         else:
             print("Blad wyboru")
