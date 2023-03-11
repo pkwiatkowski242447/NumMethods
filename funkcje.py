@@ -1,4 +1,5 @@
 import numpy
+import math
 
 
 def horner(x, tablica):
@@ -10,11 +11,21 @@ def horner(x, tablica):
 
 def y(x, funkcja):
     wynik = 0.0
+    wspolczynniki = [1, 2, 0, 7]
     if funkcja == 1:
-        wspolczynniki = [2, 3, 4, -1]
         wynik = horner(x, wspolczynniki)
     elif funkcja == 2:
-        wynik = numpy.tan(x)
+        wynik = numpy.cos(x)
     elif funkcja == 3:
-        wynik = 0.5 ** x
+        wynik = math.e ** x
+    elif funkcja == 4:
+        wynik = horner(numpy.cos(x), wspolczynniki)
+    elif funkcja == 5:
+        wynik = numpy.cos(horner(x), wspolczynniki)
+    elif funkcja == 6:
+        wynik = math.e ** numpy.cos(x)
+    elif funkcja == 7:
+        wynik = numpy.cos(math.e ** x)
+    elif funkcja == 8:
+        wynik = horner(math.e ** x, wspolczynniki)
     return wynik
