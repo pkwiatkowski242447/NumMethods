@@ -42,10 +42,11 @@ def podstawowy_wybor(function_choice):
             i_value_bisection = b.bisection(x1, x2, function_choice, "a", wybor_epsilon)[1]
             x_value_secant = s.secant(x1, x2, function_choice, "a", wybor_epsilon)[0]
             i_value_secant = s.secant(x1, x2, function_choice, "a", wybor_epsilon)[1]
-            print("Wynik osiągnięty metodą bisekcji: " + str(x_value_bisection))
-            print("Po: " + str(i_value_bisection) + " liczbie iteracji")
-            print("Wynik osiągnięty metodą siecznych: " + str(x_value_secant))
-            print("Po: " + str(i_value_secant) + " liczbie iteracji")
+            print("Wynik osiągnięty metodą bisekcji:" + str(x_value_bisection) + ", liczba iteracji: " + str(
+                i_value_bisection))
+            print("Wynik osiągnięty metodą siecznych:" + str(x_value_secant) + ", liczba iteracji: " + str(
+                i_value_secant))
+            print("Wykres z pierwiastkami, kółko - bisekcja | krzyżyk - sieczne")
             w.final_graph(function_choice, x1, x2,
                           x_value_bisection,
                           x_value_secant)
@@ -53,6 +54,7 @@ def podstawowy_wybor(function_choice):
             wybor_iteracji = int(input("Podaj liczbe iteracji: "))
             print("Wynik osiągnięty metodą bisekcji: " + str(b.bisection(x1, x2, function_choice, "b", wybor_iteracji)))
             print("Wynik osiągnięty metodą siecznych: " + str(s.secant(x1, x2, function_choice, "b", wybor_iteracji)))
+            print("Wykres z pierwiastkami, kółko - bisekcja | krzyżyk - sieczne")
             w.final_graph(function_choice, x1, x2,
                           b.bisection(x1, x2, function_choice, "b", wybor_iteracji),
                           s.secant(x1, x2, function_choice, "b", wybor_iteracji))

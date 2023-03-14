@@ -12,6 +12,7 @@ def horner(x, tab):
 def y(x, funkcja):
     result = 0.0
     coefficients = [1, 2, 0, 7]
+    coefficients_2 = [1, 4, -21]
     if funkcja == 1:
         result = horner(x, coefficients)
     elif funkcja == 2:
@@ -28,4 +29,6 @@ def y(x, funkcja):
         result = numpy.cos(math.e ** x)
     elif funkcja == 8:
         result = horner(math.e ** x, coefficients)
+    elif funkcja == 10:
+        result = horner(x,coefficients_2)
     return result
