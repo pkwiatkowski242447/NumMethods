@@ -57,9 +57,9 @@ def show_graph_with_points(function_num, start, end, zero_b, zero_s):
         dot_marker = mln.Line2D([], [], color='black', marker='o', linestyle='None', markersize='6',
                                 label='Pierwiastek z metody siecznych')
         if zero_b is not None:
-            plt.plot(zero_b, cl.function_value(zero_b, function_num), marker='o', markerfacecolor='black', markeredgecolor='black')
+            plt.plot(zero_s, cl.function_value(zero_s, function_num), marker='o', markerfacecolor='black', markeredgecolor='black')
         if zero_s is not None:
-            plt.plot(zero_s, cl.function_value(zero_s, function_num), marker='x', markerfacecolor='blue', markeredgecolor='blue')
+            plt.plot(zero_b, cl.function_value(zero_b, function_num), marker='x', markerfacecolor='blue', markeredgecolor='blue')
         plt.legend(handles=[x_marker, dot_marker])
         plt.show()
 
