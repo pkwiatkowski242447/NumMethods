@@ -20,5 +20,10 @@ def round_value(val):
         return math.floor(val) + 1
 
 
-def power(val, exp):
-    return 0
+def find_5_mul(arg):
+    val = int(arg / 5)
+    if arg % 5 != 0 and arg > 0:
+        val = val + 1
+    elif arg % 5 != 0 and arg < 0:
+        val = val - 1
+    return val * 5

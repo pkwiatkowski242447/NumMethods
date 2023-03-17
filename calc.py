@@ -10,19 +10,19 @@ def function_value(arg, function_choice):
         case 2:
             val = math.cos(arg)
         case 3:
-            val = math.e ** arg     # Ewentualnie tu zmiana w operatorze **
+            val = math.e ** arg - horner_scheme(arg, [1, 0, 0, 0, 0], 5)
         case 4:
-            val = horner_scheme(math.cos(arg), coefficients, 4)
+            val = horner_scheme(math.cos(arg), coefficients, 4) - horner_scheme(arg, [1, 0, 0], 3)
         case 5:
             val = math.cos(horner_scheme(arg, coefficients, 4))
         case 6:
-            val = math.e ** math.cos(arg)
+            val = math.e ** math.cos(arg) - 1
         case 7:
-            val = math.cos(math.e ** arg)
+            val = math.cos(math.e ** (arg / 5))
         case 8:
-            val = horner_scheme(math.e ** arg, coefficients, 4)
+            val = horner_scheme(math.e ** arg, [1, 0, 0], 3) - math.sin(arg) - math.cos(arg)
         case 9:
-            val = math.e ** horner_scheme(arg, coefficients, 4)
+            val = math.e ** horner_scheme(arg, [1, 0, 0], 3) - 5
         case _:
             val = 0
     return val
@@ -91,7 +91,7 @@ def bisection(function_number, start, end, cond, value):
                     start = mid
                     value_a = value_mid
             print("\nMiejscem zerowym wybranej funkcji jest x = " + str(mid) + ", wyznaczony bisekcją.")
-            print("Uzykana dokładność wyznaczenia miejsca zerowego: " + str(mid - temp))
+            print("Uzykana dokładność wyznaczenia miejsca zerowego: " + str(abs(mid - temp)))
             return mid
 
 
@@ -134,5 +134,5 @@ def secant_method(function_number, x1, x2, cond, value):
                 print("\nNie udało się wyznaczyć miejsca zerowego wybranej funkcji.")
             else:
                 print("\nPierwiastkiem wybranej funkcji jest x = " + str(x2) + ", wyznaczony metodą siecznych.")
-                print("Uzyskana dokładność wyznaczenia miejsca zerowego: " + str(x2 - x1))
+                print("Uzyskana dokładność wyznaczenia miejsca zerowego: " + str(abs(x2 - x1)))
                 return x2
