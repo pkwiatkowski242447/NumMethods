@@ -91,7 +91,7 @@ def main():
                     if stop_cond == 1:
                         val = float(input("Podaj oczekiwaną dokładność: "))
                     elif stop_cond == 2:
-                        val = int(input("Podaj oczekiwaną liczbę interacji: "))
+                        val = int(input("Podaj oczekiwaną liczbę iteracji: "))
                     else:
                         print("Podano nieprawidłową opcję z menu")
                         ad.clear()
