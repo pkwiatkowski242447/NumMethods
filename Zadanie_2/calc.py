@@ -116,15 +116,23 @@ def check_convergence(start_df):
         else:
             list_of_sums_all = []
             sum_of_all_squared = 0
-            for i in range(len(start_df.columns)):
-                for j in range(len(start_df.index)):
-                    sum_of_all_squared += abs(start_df[j][i]) ** 2
+            for i in range(len(start_df.index)):
+                for j in range(len(start_df.columns)):
+                    sum_of_all_squared += abs(start_df[i][j]) ** 2
                 list_of_sums_all.append(sum_of_all_squared)
                 sum_of_all_squared = 0
             if max(list_of_sums_all) < 1:
                 return True
             else:
-                return False
+                sum_of_all_exc_diag = 0
+                for i in range(len(start_df.index)):
+                    for j in range(len(start_df.columns)):
+                        if i != j:
+                            sum_of_all_exc_diag += abs(start_df[i][j])
+                    if abs(start_df[i][i]) <= sum_of_all_exc_diag:
+                        return False
+                    sum_of_all_exc_diag = 0
+                return True
 
 
 '''
