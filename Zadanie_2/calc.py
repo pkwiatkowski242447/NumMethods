@@ -21,12 +21,12 @@ def divide_given_frame(data_frame):
     d_dataframe = data_frame.copy(deep=True)
     lu_dataframe = data_frame.copy(deep=True)
 
-    for i in range(len(data_frame.columns)):
-        for j in range(len(data_frame)):
+    for i in range(len(data_frame.index)):
+        for j in range(len(data_frame.columns)):
             if i != j:
-                d_dataframe[i][j] = 0
+                d_dataframe.iloc[i, j] = 0
             else:
-                lu_dataframe[i][j] = 0
+                lu_dataframe.iloc[i, j] = 0
 
     list_of_dataframes = [d_dataframe, lu_dataframe]
     return list_of_dataframes
@@ -98,7 +98,7 @@ def check_convergence(start_df):
     sum_in_row = 0
     for i in range(len(start_df.index)):
         for j in range(len(start_df.columns)):
-            sum_in_row += abs(start_df[i][j])
+            sum_in_row += abs(start_df.iloc[i, j])
         list_of_sums_row.append(sum_in_row)
         sum_in_row = 0
     if max(list_of_sums_row) < 1:
@@ -108,7 +108,7 @@ def check_convergence(start_df):
         sum_in_column = 0
         for i in range(len(start_df.columns)):
             for j in range(len(start_df.index)):
-                sum_in_column += abs(start_df[j][i])
+                sum_in_column += abs(start_df.iloc[j, i])
             list_of_sums_column.append(sum_in_row)
             sum_in_column = 0
         if max(list_of_sums_row) < 1:
@@ -118,7 +118,7 @@ def check_convergence(start_df):
             sum_of_all_squared = 0
             for i in range(len(start_df.index)):
                 for j in range(len(start_df.columns)):
-                    sum_of_all_squared += abs(start_df[i][j]) ** 2
+                    sum_of_all_squared += abs(start_df.iloc[i, j]) ** 2
                 list_of_sums_all.append(sum_of_all_squared)
                 sum_of_all_squared = 0
             if max(list_of_sums_all) < 1:
@@ -127,8 +127,8 @@ def check_convergence(start_df):
                 sum_of_all_exc_diag = 0
                 for i in range(len(start_df.index)):
                     for j in range(len(start_df.columns)):
-                        if i != j:
-                            sum_of_all_exc_diag += abs(start_df[i][j])
+                        if j != i:
+                            sum_of_all_exc_diag += abs(start_df[j][i])
                     if abs(start_df[i][i]) <= sum_of_all_exc_diag:
                         return False
                     sum_of_all_exc_diag = 0
@@ -150,10 +150,10 @@ def iterative_solving(coefficients, result_vector, criterion, value):
         final_result = pd.DataFrame(index=range(len(result_vector.index)), columns=range(len(result_vector.columns)))
         temporary_df = pd.DataFrame(index=range(len(final_result.index)), columns=range(len(final_result.columns)))
         total_iterations = 0
-        for i in range(len(final_result.columns)):
-            for j in range(len(final_result.index)):
-                final_result[i][j] = 0
-                temporary_df[i][j] = 1
+        for i in range(len(final_result.index)):
+            for j in range(len(final_result.columns)):
+                final_result.iloc[i, j] = 0
+                temporary_df.iloc[i, j] = 1
         if criterion == 1:
             while count_accuracy(final_result, temporary_df) > value and total_iterations < 1000:
                 total_iterations += 1
@@ -170,7 +170,7 @@ def iterative_solving(coefficients, result_vector, criterion, value):
         if total_iterations < 1000:
             ad.new_line()
             for i in range(len(final_result)):
-                print("Wartość x" + str(i) + ": " + '{:.12f}'.format(final_result[0][i]))
+                print("Wartość x" + str(i + 1) + ": " + '{:.8f}'.format(final_result[0][i]))
         else:
             ad.new_line()
             print("Kryterium dokładności nie było w stanie wyznaczyć rozwiązania układu równań.")
