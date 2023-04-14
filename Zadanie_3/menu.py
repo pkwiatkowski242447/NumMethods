@@ -47,7 +47,7 @@ def starting_menu():
 
 def function_choice_menu():
     print("================ Menu wyboru funkcji ================")
-    print("1. 8.1 x + 2.5")
+    print("1. 2.3 x + 0.5")
     print("2. 2 * |x| - 2.5")
     print("3. sin(x)")
     print("4. x ^ 2 + x + 4")
@@ -59,6 +59,44 @@ def function_choice_menu():
     print("10. |x| ^ 3 - 2 * |x| + 8")
     print("11. Powrót do poprzedniego menu.")
     print("=====================================================")
+
+
+"""
+    @ Function: get_function_string()
+    
+    @ Parameters:
+    
+    * function_choice -> number of a function chosen by the user from menu.
+    
+    @ Description: This method is used for retrieving string representing original function's
+    formula.
+"""
+
+
+def get_function_string(function_choice):
+    function_formula = ""
+    match function_choice:
+        case 1:
+            function_formula = "2.3 x + 0.5"
+        case 2:
+            function_formula = "2 * |x| - 2.5"
+        case 3:
+            function_formula = "sin(x)"
+        case 4:
+            function_formula = "x ^ 2 + x + 4"
+        case 5:
+            function_formula = "cos(7x + 6)"
+        case 6:
+            function_formula = "8.1 sin(x) + x"
+        case 7:
+            function_formula = "(sin 2x) ^ 3 - 1"
+        case 8:
+            function_formula = "cos |x| - 2"
+        case 9:
+            function_formula = "|sin x| + cos|x|"
+        case 10:
+            function_formula = "|x| ^ 3 - 2 * |x| + 8"
+    return function_formula
 
 
 """

@@ -1,6 +1,8 @@
 import math
+import numpy as np
+import matplotlib.pyplot as plt
+import menu as mn
 
-import pandas as pd
 
 """
     @ Function: horner_scheme()
@@ -37,7 +39,7 @@ def calculate_function_value(function_arg, function_choice):
     function_val = 0
     match function_choice:
         case 1:
-            function_val = 8.1 * function_arg + 2.5
+            function_val = 2.3 * function_arg + 0.5
         case 2:
             function_val = 2 * abs(function_arg) - 2.5
         case 3:
@@ -60,10 +62,12 @@ def calculate_function_value(function_arg, function_choice):
 
 
 """
-    @ Function: calculate_interpolation_polynomial()
+    @ Function: interpolate_chosen_function()
     
     @ Parameters:
     
+    * start_of_interval -> start of the interpolation interval, used for making graphs
+    * end_of_interval   -> end of the interpolation interval, used for making graphs
     * function_choice   -> numerical identifier of function chosen by the user
     * dict_of_values    -> dictionary containing pairs argument value -> function value for that argument
     
@@ -76,5 +80,104 @@ def calculate_function_value(function_arg, function_choice):
 #  making graphs of functions (it should take as params stand and end of interval and based on that take the scale)
 
 
-def calculate_interpolation_polynomial(start_of_interval, end_of_interval, function_choice, dict_of_values):
-    return 0
+def interpolate_chosen_function(start_of_interval, end_of_interval, function_choice, dict_of_values):
+    list_of_args = list(dict_of_values.keys())
+    list_of_vals = list(dict_of_values.values())
+    returned_array = divided_difference_table(list_of_args, list_of_vals)[0, :]
+    make_functions_plot(function_choice, returned_array, mn.get_function_string(function_choice), start_of_interval,
+                        end_of_interval, list_of_args, list_of_vals)
+
+
+"""
+    @ Function: divided_difference_table()
+
+    @ Parameters:
+
+    * list_of_args -> List containing all of arguments, which divided differences will be calculated for.
+    * list_of_vals -> List of values of a function for given arguments, that will be used for calculating
+    divided differences.
+
+    @ Description: This function is used for getting divided differences table, used later 
+    for calculating Newton's polynomial.
+"""
+
+
+def divided_difference_table(list_of_args, list_of_vals):
+    number_of_rows = len(list_of_vals)
+    coefficients = np.zeros([number_of_rows, number_of_rows])
+    coefficients[:, 0] = list_of_vals
+    for j in range(1, number_of_rows):
+        for i in range(number_of_rows - j):
+            coefficients[i][j] = (
+                        (coefficients[i + 1][j - 1] - coefficients[i][j - 1]) / (list_of_args[i + j] - list_of_args[i]))
+    return coefficients
+
+
+"""
+    @ Function: calculate_polynomial_value()
+    
+    @ Parameters: 
+    
+    * coefficients -> array containing values of divided differences
+    * list_of_args -> array containing values of arguments with known values
+    * current_arg  -> value of argument, which chosen function is interpolated for
+    
+    @ Description: This function is used for calculating interpolation function value for a given argument.
+"""
+
+
+def calculate_polynomial_value(coefficients, list_of_args, current_arg):
+    length_of_args = len(list_of_args) - 1
+    polynomial_value = coefficients[length_of_args]
+    for i in range(1, length_of_args + 1):
+        polynomial_value = coefficients[length_of_args - i] + (current_arg - list_of_args[length_of_args - i]) * polynomial_value
+    return polynomial_value
+
+
+"""
+    @ Function: make_functions_plot()
+    
+    @ Parameters: 
+    
+    * function_choice               -> number of a function chosen from the menu by the user
+    * array_of_itr_coefficients     -> array of coefficients in the interpolating function's formula - used for
+    calculating interpolating function's values.
+    * org_formula                   -> string representing original function's formula
+    * start_of_interval             -> start of original function's arguments interval
+    * end_of_interval               -> end of original function's arguments interval
+    * list_of_known_args            -> list containing arguments of a function, specified by the user
+    * list_of_known_vals            -> list containing values for user specified arguments
+    
+    @ Description: This method is used for making plot with both original and interpolating function
+    in order to compare them and show them to the user.
+"""
+
+
+def make_functions_plot(function_choice, array_of_itr_coefficients, org_formula, start_of_interval,
+                        end_of_interval, list_of_known_args, list_of_known_vals):
+    list_of_points = np.linspace(start_of_interval, end_of_interval, int(end_of_interval - start_of_interval) * 1000)
+    list_of_values_org = []
+    list_of_values_itr = []
+
+    for i in list_of_points:
+        list_of_values_org.append(calculate_function_value(i, function_choice))
+
+    for i in list_of_points:
+        list_of_values_itr.append(calculate_polynomial_value(array_of_itr_coefficients, list_of_known_args, i))
+
+    plt.subplots(1, 1, figsize=(10, 14))
+    plt.plot(list_of_points, list_of_values_org, label=org_formula, color="green")
+    plt.plot(list_of_points, list_of_values_itr, label="Funkcja interpolująca", color="orange", linestyle="dashed")
+    plt.scatter(list_of_known_args, list_of_known_vals, marker='X', color="blue")
+    distance = abs(end_of_interval - start_of_interval) / 10
+    plt.xlim((start_of_interval - (distance / 10), end_of_interval + (distance / 10)))
+    plt.ylim((-20.1, 20.1))
+    plt.xticks(np.arange(start_of_interval, end_of_interval + (distance / 10), step=distance))
+    plt.yticks(np.arange(-20.1, 20.1, step=2.5))
+    plt.xlabel("Oś OX")
+    plt.ylabel("Oś OY")
+    plt.title("Porównanie wybranej funkcji oraz funkcji interpolującej")
+    plt.grid()
+    plt.legend()
+
+    plt.show()

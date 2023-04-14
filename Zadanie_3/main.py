@@ -39,6 +39,10 @@ def main():
                         if start_of_interval <= list_of_args[i] <= end_of_interval:
                             function_val = cl.calculate_function_value(list_of_args[i], function_choice)
                             dict_of_values[list_of_args[i]] = function_val
+                    function_val = cl.calculate_function_value(start_of_interval, function_choice)
+                    dict_of_values[start_of_interval] = function_val
+                    function_val = cl.calculate_function_value(end_of_interval, function_choice)
+                    dict_of_values[end_of_interval] = function_val
                     ad.clear_screen()
                     dict_of_values = mn.interactive_value_insertion(start_of_interval, end_of_interval, function_choice, dict_of_values)
                     ad.press_to_continue()
@@ -46,7 +50,7 @@ def main():
                     ad.clear_screen()
                     dict_of_values = mn.interactive_value_insertion(start_of_interval, end_of_interval, function_choice, {})
                     ad.press_to_continue()
-                cl.calculate_interpolation_polynomial(start_of_interval, end_of_interval, function_choice, dict_of_values)
+                cl.interpolate_chosen_function(start_of_interval, end_of_interval, function_choice, dict_of_values)
         else:
             ad.clear_screen()
             print("Wybrano zakończenie działania programu.")
