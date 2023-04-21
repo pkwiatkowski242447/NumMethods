@@ -1,5 +1,12 @@
-import os
 from numpy import double
+import calc
+
+"""
+    Funkcja wczytująca plik z węzłami interpolacyjnymi. 
+    interpolation_nodes -> tablica z wczytanymi węzłami interpolacyjnymi, konwertując te wartości na double
+    W obrębie tej funkcji występuje też sprawdzanie czy węzły interpolacyjne znajdują się w podanym przez użytkownika
+    zakresie
+"""
 
 
 def read_from_file(filename, x_1, x_2):
@@ -12,6 +19,23 @@ def read_from_file(filename, x_1, x_2):
         if tab_element < x_1 or tab_element > x_2:
             result = False
     return result, interpolation_nodes
+
+
+"""
+    Funkcja menu_start: 
+        1.Wyświetlenie wszystkich wbudowanych funkcji 
+        2.Wybór przez użytkownika funkcji 
+        3.Po wybraniu funkcji, użytkownik wybiera przedział interpolacji 
+        4.Sprawdzenie czy przedział jest poprawny (czy lewy kraniec przedziału nie jest większy niż prawy oraz 
+        czy prawy nie jest mniejszy niż lewy)
+        5.Użytkownik podaje nazwę pliku z którego będą wczytywane węzły interpolacyjne
+        6.Jeżeli wczytane węzły nie spełniają wymagań to program kończy swoje działanie
+        7.Podanie argumentu przez użytkownika dla którego będzie liczona wartość interpolacji 
+        8.Sprawdzenie czy dany argument znajduje się w przedziale interpolacji 
+        9.Następnie zostaje liczona wartość funkcji dla węzłów interpolacyjnych przez funkcję interp_nodes_values
+        10.Na koniec zostaje zostaje zwrócona przybliżona wartość w punkcie podanym przez użytkownika za pomocą 
+        interpolacji Newtona dla nierównych odstępu argumentu 
+"""
 
 
 def menu_start():
@@ -33,15 +57,23 @@ def menu_start():
                 input("Podaj lewy kraniec przedziału interpolacji: "))
             x2 = double(
                 input("Podaj prawy kraniec przedziału interpolacji: "))
-            file_name = input("Podaj nazwę pliku z którego będą wczytywane węzły intepolacyjne: ")
-            valid = read_from_file(file_name, x1, x2)[0]
-            interp_nodes = read_from_file(file_name, x1, x2)[1]
-            if (valid == False):
-                print("Wczytane węzły nie spełniają wymagań")
-                break
             if x1 >= x2:
                 print("Lewy kraniec przedziału musi być mniejszy niż prawy koniec przedziału")
-            elif function_choice == 11:
+                break
+            file_name = input("Podaj nazwę pliku z którego będą wczytywane węzły intepolacyjne: ")
+            is_valid = read_from_file(file_name, x1, x2)[0]
+            if is_valid is False:
+                print("Wczytane węzły nie spełniają wymagań")
+                break
+            interp_nodes = read_from_file(file_name, x1, x2)[1]
+            x = double(input("Podaj wartość dla której będzie liczona interpolacja: "))
+            if x < x1 or x > x2:
+                print("Wartosc ta nie znajduje się w przedziale")
                 break
             else:
-                print("Blad wyboru")
+                interp_nodes_values = calc.y_values_interp_nodes(interp_nodes, function_choice)
+                print(calc.newton_interpolation(x, interp_nodes, interp_nodes_values))
+        elif function_choice == 11:
+            break
+        else:
+            print("Blad wyboru")
