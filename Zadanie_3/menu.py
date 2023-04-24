@@ -1,5 +1,6 @@
 from numpy import double
 import calc
+import plots
 
 """
     Funkcja wczytująca plik z węzłami interpolacyjnymi. 
@@ -73,6 +74,7 @@ def menu_start():
             else:
                 interp_nodes_values = calc.y_values_interp_nodes(interp_nodes, function_choice)
                 print(calc.newton_interpolation(x, interp_nodes, interp_nodes_values))
+                plots.function_plot(x1, x2, function_choice, interp_nodes, x)
         elif function_choice == 11:
             break
         else:
