@@ -166,8 +166,8 @@ def make_functions_plot(function_choice, array_of_itr_coefficients, org_formula,
         list_of_values_itr.append(calculate_polynomial_value(array_of_itr_coefficients, list_of_known_args, i))
 
     plt.subplots(1, 1, figsize=(10, 14))
-    plt.plot(list_of_points, list_of_values_org, label=org_formula, color="green")
-    plt.plot(list_of_points, list_of_values_itr, label="Funkcja interpolująca", color="orange", linestyle="dashed")
+    plt.plot(list_of_points, list_of_values_org, color="green")
+    plt.plot(list_of_points, list_of_values_itr, color="orange", linestyle="dashed")
     plt.scatter(list_of_known_args, list_of_known_vals, marker='X', color="blue")
     distance = abs(end_of_interval - start_of_interval) / 10
     plt.xlim((start_of_interval - (distance / 10), end_of_interval + (distance / 10)))
@@ -178,6 +178,6 @@ def make_functions_plot(function_choice, array_of_itr_coefficients, org_formula,
     plt.ylabel("Oś OY")
     plt.title("Porównanie wybranej funkcji oraz funkcji interpolującej")
     plt.grid()
-    plt.legend()
+    plt.legend(["Funkcja oryginalna", "Wielomian interpolujący", "Węzły interpolacji"])
 
     plt.show()
