@@ -1,5 +1,31 @@
+import menu as mn
+import additional as ad
+
+
 def main():
-    print("Hello, world!")
+    choice = 0
+    while choice != "3":
+        ad.clear_screen()
+        mn.print_main_menu()
+        choice = input("Podaj twój wybór: ")
+        ad.print_new_line()
+        match choice:
+            case "1":
+                mn.print_newton_cotes_menu()
+                ad.print_new_line()
+                ad.press_to_continue()
+            case "2":
+                mn.print_gauss_menu()
+                ad.print_new_line()
+                ad.press_to_continue()
+            case "3":
+                print("Wybrano zakończenie programu.")
+                ad.print_new_line()
+                ad.press_to_continue()
+            case other:
+                print("Wybrano opcję, która nie znajduje się w menu.")
+                ad.print_new_line()
+                ad.press_to_continue()
 
 
 if __name__ == "__main__":
