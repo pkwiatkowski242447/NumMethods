@@ -11,11 +11,15 @@ def main():
         ad.print_new_line()
         match choice:
             case "1":
-                mn.print_newton_cotes_menu()
+                integral_value = mn.print_newton_cotes_menu()
+                ad.print_new_line()
+                print("Wartość całki oznaczonej wybranej funkcji na przedziale [-1, 1]: " + '{:.12}'.format(integral_value))
                 ad.print_new_line()
                 ad.press_to_continue()
             case "2":
-                mn.print_gauss_menu()
+                integral_value = mn.print_gauss_menu()
+                ad.print_new_line()
+                print("Wartość całki oznaczonej wybranej funkcji na przedziale [-1, 1]: " + '{:.12}'.format(integral_value))
                 ad.print_new_line()
                 ad.press_to_continue()
             case "3":
