@@ -22,11 +22,11 @@ def menu_start():
             print("2.Kwadratura Gaussa na przedziale [-1,1] z wagą 1/sqrt(1-x^2)")
             method_choice = int(input("Wybierz metodę: "))
             if method_choice == 1:
-                print(functions.calculate_integral_newton_cotes(function_choice, eps))
+                print(functions.calculate_integral_newton_cotes(function_choice, -1, 1, eps))
             if method_choice == 2:
                 nodes = int(input("Ile chcesz węzłów: "))
                 print(functions.calculate_integral_gauss(nodes, function_choice))
-        elif function_choice == 11:
-            break
-        else:
-            print("Mierny wybór")
+            elif function_choice == 11:
+                break
+            else:
+                print("Mierny wybór")

@@ -60,6 +60,6 @@ def calculate_integral_gauss(n, function):
 
     result = 0.0
     for i in range(n):
-        result += weights[i] * y(nodes[i], function)
+        result += weights * y(nodes[i], function)
 
     return result
