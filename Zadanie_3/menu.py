@@ -63,18 +63,12 @@ def menu_start():
                 break
             file_name = input("Podaj nazwę pliku z którego będą wczytywane węzły intepolacyjne: ")
             is_valid = read_from_file(file_name, x1, x2)[0]
+            interp_nodes = read_from_file(file_name, x1, x2)[1]
             if is_valid is False:
                 print("Wczytane węzły nie spełniają wymagań")
                 break
-            interp_nodes = read_from_file(file_name, x1, x2)[1]
-            x = double(input("Podaj wartość dla której będzie liczona interpolacja: "))
-            if x < x1 or x > x2:
-                print("Wartosc ta nie znajduje się w przedziale")
-                break
             else:
-                interp_nodes_values = calc.y_values_interp_nodes(interp_nodes, function_choice)
-                print(calc.newton_interpolation(x, interp_nodes, interp_nodes_values))
-                plots.function_plot(x1, x2, function_choice, interp_nodes, x)
+                plots.function_plot(x1, x2, function_choice, interp_nodes)
         elif function_choice == 11:
             break
         else:
