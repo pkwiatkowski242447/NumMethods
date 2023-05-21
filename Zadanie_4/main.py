@@ -21,7 +21,7 @@ def main():
                 ad.print_new_line()
                 print("Wartość całki oznaczonej wybranej funkcji na przedziale [-1, 1]: " + '{:.12}'.format(integral_value))
                 ad.print_new_line()
-                ad.press_to_continue()
+                ad.press_to_continue()p
             case "3":
                 print("Wybrano zakończenie programu.")
                 ad.print_new_line()
