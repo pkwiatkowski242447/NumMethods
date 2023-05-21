@@ -1,20 +1,14 @@
-import numpy as np
-
-def linear(x):
-    return x
+import math
 
 
-def absolute(x):
-    return np.abs(x)
-
-
-def polynomial(x):
-    return x**3 - 2*x**2 + x
-
-
-def trigonometric(x):
-    return np.sin(x)
-
-
-def composite(x):
-    return np.sin(x**2) + np.cos(x)
+def function_value(function_choice, x):
+    if function_choice == "linear":
+        return x
+    elif function_choice == "absolute":
+        return abs(x)
+    elif function_choice == "polynomial":
+        return x ** 2 - 3 * x + 2
+    elif function_choice == "trigonometric":
+        return math.sin(x)
+    elif function_choice == "composite":
+        return abs(math.sin(x))

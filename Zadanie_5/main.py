@@ -1,65 +1,51 @@
-from functions import *
-from approximation import *
+from approximation import calculate_approximation
+from functions import function_value
+from polynomials import evaluate_polynomial
+import numpy as np
+import matplotlib.pyplot as plt
 
 
-def print_function_options():
-    print("Choose a function to approximate:")
-    print("1. Linear")
-    print("2. Absolute Value")
-    print("3. Polynomial")
-    print("4. Trigonometric")
-    print("5. Composite")
+def run_program():
+    function_choices = ["linear", "absolute", "polynomial", "trigonometric", "composite"]
+
+    print("Available functions:")
+    for i, function_choice in enumerate(function_choices, start=1):
+        print(f"{i}. {function_choice}")
+
+    function_choice = int(input("Choose a function (enter the corresponding number): "))
+    function_choice = function_choices[function_choice - 1]
+
+    approximation_interval = tuple()
+
+    a = float(input("Enter the lower bound of the approximation interval (a): "))
+    approximation_interval += (a,)
+
+    b = float(input("Enter the upper bound of the approximation interval (b): "))
+    approximation_interval += (b,)
+
+    polynomial_degree = int(input("Enter the degree of the approximating polynomial: "))
+
+    number_of_nodes = int(input("Enter the number of nodes for Gauss quadrature: "))
+
+    coefficients, max_error, mean_error = calculate_approximation(
+        function_choice, approximation_interval, polynomial_degree, number_of_nodes
+    )
+
+    print(f"\nCoefficients of the approximating polynomial: {coefficients}")
+    print(f"Maximum approximation error: {max_error}")
+    print(f"Mean approximation error: {mean_error}")
+
+    x_vals = np.linspace(approximation_interval[0], approximation_interval[1], 1000)
+    y_vals_original = [function_value(function_choice, x) for x in x_vals]
+    y_vals_approximation = [evaluate_polynomial(coefficients, x) for x in x_vals]
+
+    plt.plot(x_vals, y_vals_original, label="Original Function")
+    plt.plot(x_vals, y_vals_approximation, label="Approximation")
+    plt.xlabel("x")
+    plt.ylabel("f(x)")
+    plt.legend()
+    plt.title("Approximation using Chebyshev Polynomials")
+    plt.show()
 
 
-def print_integration_options():
-    print("Choose an integration method:")
-    print("1. Gauss-Legendre Quadrature")
-    print("2. Gauss-Chebyshev Quadrature")
-
-
-def get_user_choice(prompt, options):
-    while True:
-        choice = input(prompt)
-        if choice in options:
-            return choice
-        print("Invalid choice. Please try again.")
-
-
-def perform_approximation():
-    function_mapping = {
-        '1': linear,
-        '2': absolute,
-        '3': polynomial,
-        '4': trigonometric,
-        '5': composite
-    }
-
-    print_function_options()
-    function_choice = get_user_choice("Enter the corresponding number: ", function_mapping)
-
-    f = function_mapping[function_choice]
-
-    interval = tuple(map(float, input('Enter the interval (e.g., -1 1): ').split()))
-
-    degree = int(input('Enter the degree of the approximation polynomial: '))
-
-    print_integration_options()
-    integration_choice = get_user_choice("Enter the corresponding number: ", ["1", "2"])
-
-    if integration_choice == '1':
-        integration_method = gauss_legendre
-    else:
-        integration_method = gauss_chebyshev
-
-    num_nodes = int(input('Enter the number of integration nodes: '))
-
-    coefficients = chebyshev_approximation(f, interval, degree, integration_method, num_nodes)
-
-    plot_function(f, interval)
-    plot_approximation(f, interval, degree, coefficients)
-
-    error = calculate_approximation_error(f, interval, degree, coefficients)
-    print('Approximation error:', error)
-
-
-perform_approximation()
+run_program()
