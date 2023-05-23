@@ -47,26 +47,30 @@ def calculate_horner_scheme(length_of_the_array, array_of_coefficients, arg_valu
 def calculate_function_value(function_choice, arg_value):
     value = 0
     match function_choice:
-        case "1":
+        case 1:
             value = 0.6 * arg_value - 1.3
-        case "2":
+        case 2:
             value = 2.1 * abs(arg_value) - 3.0
-        case "3":
+        case 3:
             value = 3 * math.sin(2 * arg_value) - 0.5
-        case "4":
+        case 4:
             value = calculate_horner_scheme(4, [1, -3, 1, -7], arg_value)
-        case "5":
+        case 5:
             value = calculate_horner_scheme(4, [1, -3, 1, -7], abs(arg_value))
-        case "6":
+        case 6:
             value = 1.5 * math.cos(abs(2 * arg_value)) - 0.25
-        case "7":
+        case 7:
             value = 0.75 * abs(math.sin(0.5 * arg_value))
-        case "8":
+        case 8:
             value = calculate_horner_scheme(4, [1, -3, 1, -7], math.sin(2 * arg_value))
-        case "9":
+        case 9:
             value = math.sin(arg_value) + 2 * arg_value + 5
-        case "10":
+        case 10:
             value = 2.1 * math.sin(calculate_horner_scheme(4, [1, -3, 1, -7], arg_value))
+        case 11:
+            value = 2 * math.sin(3 * arg_value) + math.cos(3 * arg_value)
+        case 12:
+            value = pow(arg_value, 3) + math.cos(arg_value)
     return value
 
 
@@ -93,7 +97,7 @@ def calculate_chebyshev_polynomial_value(arg_value, polynomial_degree):
     else:
         degree_minus_two = 1
         degree_minus_one = arg_value
-        for i in range(2, polynomial_degree):
+        for i in range(2, polynomial_degree + 1):
             temp = degree_minus_one
             degree_minus_one = 2 * arg_value * degree_minus_one - degree_minus_two
             degree_minus_two = temp
@@ -123,7 +127,7 @@ def calculate_legendre_polynomial_value(arg_value, polynomial_degree):
     else:
         degree_minus_two = 1
         degree_minus_one = arg_value
-        for i in range(2, polynomial_degree):
+        for i in range(2, polynomial_degree + 1):
             temp = degree_minus_one
             degree_minus_one = ((2 * i - 1) * arg_value * degree_minus_one - (i - 1) * degree_minus_two) / i
             degree_minus_two = temp
@@ -153,7 +157,7 @@ def calculate_hermite_polynomial_value(arg_value, polynomial_degree):
     else:
         degree_minus_two = 1
         degree_minus_one = 2 * arg_value
-        for i in range(2, polynomial_degree):
+        for i in range(2, polynomial_degree + 1):
             temp = degree_minus_one
             degree_minus_one = 2 * arg_value * degree_minus_one - 2 * (i - 1) * degree_minus_two
             degree_minus_two = temp
@@ -183,7 +187,7 @@ def calculate_laugerre_polynomial_value(arg_value, polynomial_degree):
     else:
         degree_minus_two = 1
         degree_minus_one = arg_value - 1
-        for i in range(2, polynomial_degree):
+        for i in range(2, polynomial_degree + 1):
             temp = degree_minus_one
             degree_minus_one = (arg_value - 2 * i + 1) * degree_minus_one - pow(i - 1, 2) * degree_minus_two
             degree_minus_two = temp
@@ -279,6 +283,8 @@ def calculate_definite_integral_newton_cotes(function_choice, epsilon, left_side
 
 
 def calculate_integral_simpson_method(function_choice, number_of_intervals, left_side, right_side, variant, degree, up):
+    # left_side = recalculate_value(left_side, left_side, right_side, variant)
+    # right_side = recalculate_value(right_side, left_side, right_side, variant)
     interval_length = abs(right_side - left_side)
     sub_interval_length = interval_length / number_of_intervals
     integral_value = 0
@@ -286,16 +292,16 @@ def calculate_integral_simpson_method(function_choice, number_of_intervals, left
         for i in range(0, number_of_intervals):
             a = left_side + i * sub_interval_length
             b = a + sub_interval_length
-            integral_value += ((b - a) / 6) * (calculate_function_value(function_choice, a) * get_weight_function_value(a, variant) * get_polynomial_value(a, variant, degree)
-                + 4 * calculate_function_value(function_choice, (a + b) / 2) * get_weight_function_value((a + b) / 2, variant) * get_polynomial_value((a + b) / 2, variant, degree)
-                + calculate_function_value(function_choice, b) * get_weight_function_value(b, variant) * get_polynomial_value(b, variant, degree))
+            integral_value += ((b - a) / 6) * (calculate_function_value(function_choice, a) * get_weight_function_value(variant, a) * get_polynomial_value(a, variant, degree)
+                + 4 * calculate_function_value(function_choice, (a + b) / 2) * get_weight_function_value(variant, (a + b) / 2) * get_polynomial_value((a + b) / 2, variant, degree)
+                + calculate_function_value(function_choice, b) * get_weight_function_value(variant, b) * get_polynomial_value(b, variant, degree))
     else:
         for i in range(0, number_of_intervals):
             a = left_side + i * sub_interval_length
             b = a + sub_interval_length
-            integral_value += ((b - a) / 6) * (get_weight_function_value(a, variant) * pow(get_polynomial_value(a, variant, degree), 2)
-                + 4 * get_weight_function_value((a + b) / 2, variant) * pow(get_polynomial_value((a + b) / 2, variant, degree), 2)
-                + get_weight_function_value(b, variant) * pow(get_polynomial_value(b, variant, degree), 2))
+            integral_value += ((b - a) / 6) * (get_weight_function_value(variant, a) * pow(get_polynomial_value(a, variant, degree), 2)
+                + 4 * get_weight_function_value(variant, (a + b) / 2) * pow(get_polynomial_value((a + b) / 2, variant, degree), 2)
+                + get_weight_function_value(variant, b) * pow(get_polynomial_value(b, variant, degree), 2))
     return integral_value
 
 
@@ -323,7 +329,7 @@ def get_limit_value_for_newton_cotes(function_choice, epsilon, f_left_side, f_ri
             right_side += delta
             integral_iteration_value = calculate_definite_integral_newton_cotes(function_choice, epsilon, left_side, right_side, variant, degree, up)
             actual_integral_value += integral_iteration_value
-    elif 0 < f_right_side <= 0:
+    elif 0 < f_right_side <= 1:
         right_side = 0.5
         integral_iteration_value = calculate_definite_integral_newton_cotes(function_choice, epsilon, left_side, right_side, variant, degree, up)
         actual_integral_value = integral_iteration_value
@@ -370,15 +376,17 @@ def get_limit_value_for_newton_cotes(function_choice, epsilon, f_left_side, f_ri
 
 
 def get_polynomial_value(arg_value, variant, degree):
+    value = 0
     match variant:
         case 1:
-            return calculate_chebyshev_polynomial_value(arg_value, degree)
+            value = calculate_chebyshev_polynomial_value(arg_value, degree)
         case 2:
-            return calculate_hermite_polynomial_value(arg_value, degree)
+            value = calculate_hermite_polynomial_value(arg_value, degree)
         case 3:
-            return calculate_laugerre_polynomial_value(arg_value, degree)
+            value = calculate_laugerre_polynomial_value(arg_value, degree)
         case 4:
-            return calculate_legendre_polynomial_value(arg_value, degree)
+            value = calculate_legendre_polynomial_value(arg_value, degree)
+    return value
 
 
 """
@@ -418,22 +426,29 @@ def get_weight_function_value(variant, arg_value):
 
 
 def approxmiate_given_function(function_choice, left_side, right_side, integration_epsilon, mode_choice, mode_value, variant):
+    iteration_value = -1
     list_of_coefficients = []
-    if mode_choice == 1:
+    if mode_choice == "1":
+        iteration_value = mode_value
         for i in range(0, mode_value):
-            list_of_coefficients.append(
-                get_limit_value_for_newton_cotes(function_choice, integration_epsilon, left_side, right_side, variant, i, True) /
-                get_limit_value_for_newton_cotes(function_choice, integration_epsilon, left_side, right_side, variant, i, False))
+            up = get_limit_value_for_newton_cotes(function_choice, integration_epsilon, left_side, right_side, variant, i, True)
+            down = get_limit_value_for_newton_cotes(function_choice, integration_epsilon, left_side, right_side, variant, i, False)
+            coefficient_value = up / down
+            list_of_coefficients.append(coefficient_value)
+        error_value = calculate_error_value(list_of_coefficients, variant, function_choice, left_side, right_side)
     else:
-        iteration_value = 0
         error_value = 0
-        while error_value > mode_value or iteration_value == 0:
-            list_of_coefficients.append(
-                get_limit_value_for_newton_cotes(function_choice, integration_epsilon, left_side, right_side, variant, iteration_value, True) /
-                get_limit_value_for_newton_cotes(function_choice, integration_epsilon, left_side, right_side, variant, iteration_value, False))
+        while error_value > mode_value or iteration_value == -1:
+            iteration_value += 1
+            list_of_coefficients.clear()
+            for i in range(0, iteration_value):
+                up = get_limit_value_for_newton_cotes(function_choice, integration_epsilon, left_side, right_side, variant, i, True)
+                down = get_limit_value_for_newton_cotes(function_choice, integration_epsilon, left_side, right_side, variant, i, False)
+                coefficient_value = up / down
+                list_of_coefficients.append(coefficient_value)
             error_value = calculate_error_value(list_of_coefficients, variant, function_choice, left_side, right_side)
     make_graphs(left_side, right_side, function_choice, list_of_coefficients, variant)
-    return calculate_error_value(list_of_coefficients, variant, function_choice, left_side, right_side)
+    return [error_value, iteration_value]
 
 
 """
@@ -448,9 +463,9 @@ def approxmiate_given_function(function_choice, left_side, right_side, integrati
 
 
 def calculate_error_value(list_of_coefficients, variant, function_choice, left_side, right_side):
-    point_value = left_side + 0.01
+    point_value = left_side
     maximum = 0
-    while left_side <= right_side:
+    while point_value <= right_side:
         function_value = calculate_function_value(function_choice, point_value)
         approximate_value = 0
         for i in range(len(list_of_coefficients)):
@@ -458,6 +473,7 @@ def calculate_error_value(list_of_coefficients, variant, function_choice, left_s
             approximate_value += list_of_coefficients[i] * get_polynomial_value(new_point, variant, i)
         if abs(function_value - approximate_value) > maximum:
             maximum = abs(function_value - approximate_value)
+        point_value = point_value + 0.01
     return maximum
 
 
@@ -490,9 +506,10 @@ def make_graphs(left_side, right_side, function_choice, list_of_coefficients, va
     plt.plot(array_of_points, approximate_values, color="orange", linestyle="dashed")
     distance = abs(right_side - left_side) / 10
     plt.xlim((left_side - (distance / 10), right_side + (distance / 10)))
-    plt.ylim((-20.1, 20.1))
+    plt.ylim((-10.1, 10.1))
     plt.xticks(np.arange(left_side, right_side + (distance / 10), step=distance))
-    plt.yticks(np.arange(-20.1, 20.1, step=2.5))
+    plt.yticks(np.arange(-10.0, 10.1, step=1.00))
+    plt.yticks(np.arange(-10.0, 10.1, step=0.25), minor=True)
     plt.xlabel("Oś OX")
     plt.ylabel("Oś OY")
     plt.title("Porównanie wybranej funkcji oraz funkcji aproksymującej")
@@ -503,12 +520,14 @@ def make_graphs(left_side, right_side, function_choice, list_of_coefficients, va
 
 
 def recalculate_value(arg_value, left_side, right_side, variant):
+    value = 0
     match variant:
         case 1:
-            return 2 * arg_value - left_side - right_side / (right_side - left_side)
+            value = (2 * arg_value - left_side - right_side) / (right_side - left_side)
         case 2:
-            return arg_value
+            value = arg_value
         case 3:
-            return arg_value
+            value = arg_value
         case 4:
-            return 2 * arg_value - left_side - right_side / (right_side - left_side)
+            value = (2 * arg_value - left_side - right_side) / (right_side - left_side)
+    return value

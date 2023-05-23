@@ -33,10 +33,10 @@ def main():
                 right_side = float(input("Podaj prawą krawędź przedziału aproksymacji: "))
                 ad.print_new_line()
                 intergration_epsilon = float(input("Podaj dokładność całkowania (kwadraturą Newtona - Cotesa): "))
-                ad.print_new_line()
                 mode_value = 0
                 mode_choice = 0
                 while mode_choice != "1" and mode_choice != "2":
+                    ad.print_new_line()
                     mn.program_mode_menu()
                     mode_choice = input("Twój wybór: ")
                     match mode_choice:
@@ -49,6 +49,7 @@ def main():
                         case other:
                             ad.print_new_line()
                             print("Wybrano nieprawidłowy typ pracy programu.")
+                            ad.print_new_line()
                             ad.press_to_continue()
                 ad.print_new_line()
                 mn.variant_choice_menu()
@@ -56,14 +57,15 @@ def main():
                 ad.print_new_line()
                 approxmiation_error = cl.approxmiate_given_function(function_choice, left_side, right_side, intergration_epsilon, mode_choice, mode_value, variant)
                 ad.print_new_line()
-                print("Uzyskany błąd aproksymacji: " + "{:.10f}".format(approxmiation_error))
-            case "2":
+                print("Uzyskany błąd aproksymacji: " + "{:.10f}".format(approxmiation_error[0]))
+                print("Stopień wielomianu aproksymującego: " + str(approxmiation_error[1]))
                 ad.print_new_line()
+                ad.press_to_continue()
+            case "2":
                 print("Wybrano zakończenie programu.")
                 ad.print_new_line()
                 ad.press_to_continue()
             case other:
-                ad.print_new_line()
                 print("Wybrano nieprawidłową opcję (spoza menu).")
                 ad.print_new_line()
                 ad.press_to_continue()

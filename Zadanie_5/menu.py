@@ -41,7 +41,9 @@ def function_choice_menu():
     print("7.  f(x) = 0.75 |sin(0.5 x)|")
     print("8.  f(x) = sin(2x) ^ 3 - 3 sin(2x) ^ 2 + sin(2x) - 7")
     print("9.  f(x) = sin(x) + 2x - 5")
-    print("10. f(x) = 2.1 * sin(x ^ 3 - 3 x ^ 2 + x - 7")
+    print("10. f(x) = 2.1 * sin(x ^ 3 - 3 x ^ 2 + x - 7)")
+    print("11. f(x) = 2 * sin(3x) + cos(3x)")
+    print("12. f(x) = x ^ 3 + cos(x)")
     print("==============================================")
 
 
